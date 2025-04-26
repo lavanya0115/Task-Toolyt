@@ -39,23 +39,27 @@
                             {{ $key + 1 }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            {{ $attendance->internalUser ? $attendance->internalUser->user_name : ($attendance->externalUser ? $attendance->externalUser->user_id : '--') ?? '--' }}
+                            {{ ($attendance?->internalUser ? $attendance?->internalUser?->user_name : ($attendance?->externalUser ? $attendance?->externalUser?->user_id : '--')) ?? '--' }}
                         </td>
 
                         <td class="px-6 py-4 whitespace-nowrap">
-                            {{ $attendance->internalUser ? $attendance->internalUser->email : ($attendance->externalUser ? $attendance->externalUser->email : '--') ?? '--' }}
+                            {{ ($attendance?->internalUser ? $attendance?->internalUser?->email : ($attendance?->externalUser ? $attendance?->externalUser?->email : '--')) ?? '--' }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            {{ $attendance->internalUser ? $attendance->internalUser->phone : ($attendance->externalUser ? $attendance->externalUser->phone_2 : '--') ?? '--' }}
+                            {{ ($attendance?->internalUser ? $attendance?->internalUser?->phone : ($attendance?->externalUser ? $attendance?->externalUser?->phone_2 : '--')) ?? '--' }}
                         </td>
 
                         <td class="px-6 py-4 whitespace-nowrap">
-                            {{ $attendance->internalUser ? $attendance->internalUser->address : ($attendance->externalUser ? $attendance->externalUser->address : '--') ?? '--' }}
+                            {{ ($attendance?->internalUser ? $attendance?->internalUser?->address : ($attendance?->externalUser ? $attendance?->externalUser?->address : '--')) ?? '--' }}
                         </td>
-
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        @if (count($attendances) > 0)
+            <div class="p-3">
+                {{ $attendances->links() }}
+            </div>
+        @endif
     </div>
 </div>

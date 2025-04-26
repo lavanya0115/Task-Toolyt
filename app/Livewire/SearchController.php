@@ -6,24 +6,21 @@ use Livewire\Component;
 use App\Models\Attendance;
 use App\Models\ExternalUser;
 use App\Models\InternalUser;
+use Livewire\WithPagination;
 
 class SearchController extends Component
 {
-    public $internalUser;
-    public $attendances;
-    public $search = '';
+    use WithPagination;
 
-    public function mount()
-    {
-        $this->attendances = [];
-    }
+    public $internalUser;
+    public $search  = '';
+    public $perPage = 10;
+
     public function render()
     {
-
-
         $this->internalUser = filter_var($this->search, FILTER_VALIDATE_EMAIL);
         $search = $this->search;
-        $this->attendances = Attendance::with(['internalUser', 'externalUser'])->when(($this->internalUser !== false), function ($query) use ($search) {
+        $attendances = Attendance::when(($this->internalUser !== false), function ($query) use ($search) {
             return $query->whereHas('internalUser', function ($q) use ($search) {
                 $q->where('email', $search);
             });
@@ -35,12 +32,14 @@ class SearchController extends Component
                     $q2->where('phone_2', 'like', '%' . $search . '%');
                 });
             });
-        })->get();
+        })
+            ->with(['internalUser', 'externalUser'])
+            ->paginate($this->perPage);
 
         if (empty($this->search)) {
-            $this->attendances = [];
+            $attendances = [];
         }
 
-        return view('livewire.search-controller');
+        return view('livewire.search-controller', compact('attendances'));
     }
 }

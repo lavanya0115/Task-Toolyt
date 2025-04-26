@@ -6,9 +6,12 @@ use App\Models\ExternalUser;
 use App\Models\InternalUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Attendance extends Model
 {
+    use HasFactory;
+    
     protected $fillable = [
         'internal_user_id,',
         'external_user_id,',
